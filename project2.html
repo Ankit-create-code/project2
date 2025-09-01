@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Project</title> 
+  <style>
+/* Style Complete body */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  background: #f5f5f5;
+}
+
+/* Carousel wrapper (needed for hover pause) */
+.carousel-wrapper {
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Container for cards */
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 30px 20px 0;
+  box-sizing: border-box;
+  transition: transform 0.8s ease-in-out; 
+  margin-left: 180px;
+}
+
+/* Individual card */
+.card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 250px;
+  transition: 0.6s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 250px;
+  max-width: 250px;
+  flex-shrink: 0;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.caption {
+  padding: 12px;
+  font-size: 1.1rem;
+  text-align: center;
+  background: whitesmoke;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card:hover {
+  transform: scale(1.08);
+}
+
+/* Indicators */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: 0.5s;
+}
+.indicator.active {
+  background: #333;
+}
+</style>
+</head>
+<body>
+
+<div class="carousel-wrapper">
+  <div class="container" id="container">
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=1000" alt="card 1">
+      <div class="caption">Card 1</div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1613051744581-d87fbe8c9671?w=1000" alt="card 2">
+      <div class="caption">Card 2</div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1572727004231-72c211d8fb94?w=1000" alt="card 3">
+      <div class="caption">Card 3</div>
+    </div>
+
+    <div class="card">
+      <img src="https://plus.unsplash.com/premium_photo-1697729887975-126388d67c89?w=1000" alt="card 4">
+      <div class="caption">Card 4</div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1598213692858-7253f10d9c6e?w=1000" alt="card 5">
+      <div class="caption">Card 5</div>
+    </div>
+
+    <div class="card">
+      <img src="https://plus.unsplash.com/premium_photo-1694475064352-c77ffe588311?w=1000" alt="card 6">
+      <div class="caption">Card 6</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="carousel-indicators" id="indicators">
+  <div class="indicator active"></div>
+  <div class="indicator"></div>
+  <div class="indicator"></div>
+  <div class="indicator"></div>
+  <div class="indicator"></div>
+  <div class="indicator"></div>
+</div>
+
+<script>
+const container = document.getElementById('container');
+const indicators = document.querySelectorAll('.indicator');
+const cards = document.querySelectorAll('.card');
+const totalCards = cards.length;
+
+let currentIndex = 0;
+let slideInterval;
+
+// Card width including gap
+function getCardWidth() {
+  const cardWidth = 250;
+  const gap = 20;
+  return cardWidth + gap;
+}
+
+// Slide to specific card
+function slideToCard(index) {
+  currentIndex = index;
+  const translateX = -(currentIndex * getCardWidth());
+  container.style.transform = `translateX(${translateX}px)`;
+
+  // Update indicators
+  indicators.forEach((indicator, i) => {
+    indicator.classList.toggle('active', i === currentIndex);
+  });
+}
+
+// Next card
+function nextCard() {
+  currentIndex = (currentIndex + 1) % totalCards;
+  slideToCard(currentIndex);
+}
+
+// Auto-slide
+function startAutoSlide() {
+  slideInterval = setInterval(nextCard, 1000);
+}
+function stopAutoSlide() {
+  clearInterval(slideInterval);
+}
+
+// Click events
+indicators.forEach((indicator, index) => {
+  indicator.addEventListener('click', () => {
+    slideToCard(index);
+    stopAutoSlide();
+    startAutoSlide();
+  });
+});
+
+// Pause on hover
+const carouselWrapper = document.querySelector('.carousel-wrapper');
+carouselWrapper.addEventListener('mouseenter', stopAutoSlide);
+carouselWrapper.addEventListener('mouseleave', startAutoSlide);
+
+// Start auto-slide
+startAutoSlide();
+</script>
+
+</body>
+</html>
